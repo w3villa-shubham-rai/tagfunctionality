@@ -55,7 +55,7 @@ void conditionFunction() {
   if (count == 1) {
     fetchDataWithoutQuery();
   } else {
-    fetchDataWithQuery("ac");
+    fetchDataWithQuery(mentionQuery);
   }
 }
 
