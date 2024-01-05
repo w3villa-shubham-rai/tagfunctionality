@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -41,31 +42,67 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
   List<UserProfile> data = [];
-
+  String mentionQuery = "";
+  int count=1;
     @override
   void initState() {
-    super.initState();
-    fetchData();
+    super.initState();    
+     
+    conditionFunction();
   }
 
- Future<void> fetchData() async {
-    const String token =
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJ0aW1lIjoxNzAxOTQ0NjE1fQ.ZCl1pDug6j90L4HqVcCjNMSYF3wRuRac1gy9XPUyXZY';
-      final response = await http.get(Uri.parse('https://staging.simmpli.com/api/v1/profiles/mentions.json?q='),headers: {'Authorization': token});
-
-
-   
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      setState(() {
-        data = responseData.map((json) => UserProfile.fromJson(json)).toList();
-      });
-    } else {
-      throw Exception('Failed to load data');
-    }
+void conditionFunction() {
+  if (count == 1) {
+    fetchDataWithoutQuery();
+  } else {
+    fetchDataWithQuery("ac");
   }
+}
+
+Future<void> fetchDataWithoutQuery() async {
+  const String token =
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJ0aW1lIjoxNzAxOTQ0NjE1fQ.ZCl1pDug6j90L4HqVcCjNMSYF3wRuRac1gy9XPUyXZY';
+  final response = await http.get(
+    Uri.parse('https://staging.simmpli.com/api/v1/profiles/mentions.json?q='),
+    headers: {'Authorization': token},
+  );
+
+  print("Response of API: $response");
+
+  if (response.statusCode == 200) {
+    final List<dynamic> responseData = json.decode(response.body);
+    setState(() {
+      data = responseData.map((json) => UserProfile.fromJson(json)).toList();
+    });
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
+Future<void> fetchDataWithQuery(String query) async {
+  print('Fetching data for query: $query');
+  const String token =
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJ0aW1lIjoxNzAxOTQ0NjE1fQ.ZCl1pDug6j90L4HqVcCjNMSYF3wRuRac1gy9XPUyXZY';
+  final response = await http.get(
+    Uri.parse('https://staging.simmpli.com/api/v1/profiles/mentions.json?q=$query'),
+    headers: {'Authorization': token},
+  );
+
+  print("Response of API: $response");
+
+  if (response.statusCode == 200) {
+    final List<dynamic> responseData = json.decode(response.body);
+    setState(() {
+      data = responseData.map((json) => UserProfile.fromJson(json)).toList();
+    });
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
 
 
+
+ 
 
 
 
@@ -132,7 +169,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     key: key,
                     suggestionPosition: SuggestionPosition.Top,
                     maxLines: 5,
-                    minLines: 1,
+                    // onChanged:(value) {
+                      
+                    // },
+                    minLines: 2,
                     decoration:InputDecoration
                           (
                             border: InputBorder.none,
@@ -140,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             suffixIcon: IconButton(
                               onPressed: () 
                               {                        
-                              
+                                 
                               },
                               icon: Icon(Icons.send),
                             ),
@@ -188,6 +228,20 @@ class _MyHomePageState extends State<MyHomePage> {
                             );
                           }),
                     ],
+                         onChanged: (text) {
+                      final query = text.substring(text.lastIndexOf('@') + 1);
+                      setState(() {
+                        mentionQuery = query;
+                      });                  
+                     
+                        count++;
+                        if (count == 1) {
+                          fetchDataWithoutQuery();
+                        } else {
+                          fetchDataWithQuery(mentionQuery);
+                        }
+                      
+                    },
                   ),
                 ),
               ),
