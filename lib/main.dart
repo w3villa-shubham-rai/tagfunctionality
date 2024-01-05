@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (_, child) => 
-      Portal(child: child!),
+      Portal(child: child!), 
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -155,93 +155,94 @@ Future<void> fetchDataWithQuery(String query) async {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                 height: 50,
-                  decoration:  BoxDecoration(
-                    color: Color(0xFFF0F0F0),
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(9)),
-                    border: Border.all(width: 1, color: Colors.white),
-                  ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: FlutterMentions(
-                    key: key,
-                    suggestionPosition: SuggestionPosition.Top,
-                    maxLines: 5,
-                    // onChanged:(value) {
-                      
-                    // },
-                    minLines: 2,
-                    decoration:InputDecoration
-                          (
-                            border: InputBorder.none,
-                            hintText: 'Write your comment',
-                            suffixIcon: IconButton(
-                              onPressed: () 
-                              {                        
-                                 
-                              },
-                              icon: Icon(Icons.send),
-                            ),
-                          ),
-                            
-                      
-                    mentions: [
-                      Mention(
-                          trigger: '@',
-                          style: const TextStyle(
-                            color: Colors.blue,
-                          ),
-                           data: data.map((userProfile) => userProfile.toJson()).toList(),
-                        matchAll: false,
-                          suggestionBuilder: (data) {
-                            return Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        data['photo'],
-                                      ),
-                                      radius: 10,
-                                    ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        // Text(data['full_name']),
-                                    //       CircleAvatar(
-                                    //   backgroundImage: NetworkImage(
-                                    //     data['photo'],
-                                    //   ),
-                                    //   radius: 5,
-                                    // ),
-                                        Text('${data['display']}'),
-                                      ],
-                                    )
-                                  ],
-                                ),
+              child: Center(
+                child: Container(
+                   height: 50,
+                    decoration:  BoxDecoration(
+                      color: Color(0xFFF0F0F0),                      
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(9)),
+                      border: Border.all(width: 1, color: Colors.white),
+                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: FlutterMentions(
+                      key: key,
+                      suggestionPosition: SuggestionPosition.Top,
+                      maxLines: 5,                      
+                      // onChanged:(value) {
+                        
+                      // },
+                      minLines: 2,
+                      decoration:InputDecoration
+                            (
+                              border: InputBorder.none,
+                              hintText: 'Write your comment',
+                              suffixIcon: IconButton(
+                                onPressed: () 
+                                {                        
+                                   
+                                },
+                                icon: Icon(Icons.send),
                               ),
-                            );
-                          }),
-                    ],
-                         onChanged: (text) {
-                      final query = text.substring(text.lastIndexOf('@') + 1);
-                      setState(() {
-                        mentionQuery = query;
-                      });                  
-                     
-                        count++;
-                        if (count == 1) {
-                          fetchDataWithoutQuery();
-                        } else {
-                          fetchDataWithQuery(mentionQuery);
-                        }
-                      
-                    },
+                            ),                            
+                        
+                      mentions: [
+                        Mention(
+                            trigger: '@',
+                            style: const TextStyle(
+                              color: Colors.blue,
+                            ),
+                             data: data.map((userProfile) => userProfile.toJson()).toList(),
+                          matchAll: false,
+                            suggestionBuilder: (data) {
+                                return Center(
+                                child: Container(
+                                  padding:  EdgeInsets.all(10.0),
+                                  decoration:   const BoxDecoration(
+                                    color: Colors.white,
+                                   
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                          data['photo'],
+                                        ),
+                                        radius: 10,
+                                      ),
+                                      const SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Text('${data['display']}'),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            
+                             
+                              
+                              }),
+                      ],
+                        onChanged: (text) {
+                        final query = text.substring(text.lastIndexOf('@') + 1);
+                        setState(() {
+                          mentionQuery = query;
+                        });                  
+                       
+                          count++;
+                          if (count == 1) {
+                            fetchDataWithoutQuery();
+                          } else {
+                            fetchDataWithQuery(mentionQuery);
+                          }
+                        
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -282,8 +283,8 @@ class UserProfile {
   Map<String, dynamic> toJson() {
     return {
       'id': id.toString(),
-      'display': fullName, // Adjust accordingly based on your data structure
-      'photo': content, // Adjust accordingly based on your data structure
+      'display': fullName, 
+      'photo': content, 
     };
   }
 }
