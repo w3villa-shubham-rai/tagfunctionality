@@ -39,6 +39,7 @@ dependencies:
   flutter_mentions: ^2.0.1
   linkify_text: ^0.0.9
   raised_buttons: ^0.0.2
+  http: ^1.1.2
 
 dev_dependencies:
   flutter_test:
